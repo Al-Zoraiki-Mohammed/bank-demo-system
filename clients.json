@@ -1,0 +1,22 @@
+{
+    "A1": {
+        "Pincode": "111",
+        "Name": "Mohammed",
+        "Balance": "13000$"
+    },
+    "A2": {
+        "Pincode": "222",
+        "Name": "Ali",
+        "Balance": "9000$"
+    },
+    "A3": {
+        "Pincode": "333",
+        "Name": "Omar",
+        "Balance": "30000$"
+    },
+    "A4": {
+        "Pincode": "444",
+        "Name": "Saleh",
+        "Balance": "70000$"
+    }
+}
