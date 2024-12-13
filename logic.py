@@ -1,7 +1,7 @@
 """"""
-from data import load_data, write_data
+from data import *
 
-clients = load_data()
+clients = load_data(clients_file)
 
 def read_choice(length=7):
     choices = [str(i) for i in range(1,length +1)]
@@ -59,9 +59,6 @@ def find_client(text='Find Client Screen'):
     return account_no
 
 
-def commit_changes(clients):
-    write_data(clients)
-    
 
 def insert_data(account_no):
     pincode = input('Type PIN Code: ')

@@ -1,6 +1,6 @@
 """"""
 from logic import *
-from data import users
+from data import load_data, users_file
 
 def show_main_screen(title='Main Menu Screen'):
     print("=="*30,f"\n\t{title}")
@@ -18,18 +18,29 @@ def show_main_screen(title='Main Menu Screen'):
     print('=='*30)
     
     return read_choice()
-    
+
+
+def authorized_user(user_name, password):
+    users = load_data(users_file)
+    for user in users:
+        if (users.get(user).get('name') == user_name and 
+           users.get(user).get('password') == password):
+            return True
+         
+    return False
+
+
 def user_login():
     print_screens_header('Login Screen')
     user_name = input('user name: ').strip()
     password = input('password: ').strip()
-    while user_name != users.get('name') or password != users.get('password'):
-        print('Wron user name or password :( ')
+    
+    while not authorized_user(user_name, password):
+        print('Wrong user name or password :( ')
         user_name = input('user name: ').strip()
         password = input('password: ').strip()
-        print(user_name, password)
-
-    print('\nLogged Successfully ..!\n')
+            
+    print('\nLogged in Successfully ..!\n')
 
 
 if __name__ == "__main__":
