@@ -1,6 +1,7 @@
 """"""
 import json
 
+users ={'name': 'admin', 'password':'123'}
 file_path = 'clients.json'
 
 def load_data(file_path = 'clients.json'):
