@@ -163,8 +163,13 @@ def logout():
     print('Good bye !!  :) ')
 
 
-def list_users():
-    print_header('Users List',len(users), k0='Username', k1='Password', k2='Permission', k3='')
+def show_users():
+    print_header('Users List',len(users), k0=' Users No', k1='Username', k2='Password', k3='Permission')
+
+    for key, value in users.items():
+        print(f"| {key}\t\t| {value.get('name')}\t   | {value.get('password')}\t\t| {value.get('permission')} ")
+
+    
 
 def add_user():
     print('add user')
@@ -194,7 +199,7 @@ def manage_users():
         choice = read_choice(length=6)
 
         if choice == '1':
-            list_users()
+            show_users()
         elif choice == '2':
             add_user()
         elif choice == '3':
