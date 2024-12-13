@@ -1,9 +1,8 @@
 """"""
 from data import *
 
-clients = load_data(clients_file)
 
-def read_choice(length=7):
+def read_choice(length=8):
     choices = [str(i) for i in range(1,length +1)]
 
     choice = input(f'Type your choice from 1 to {length}: ').strip()
@@ -13,19 +12,21 @@ def read_choice(length=7):
     return choice
 
 
-def print_clients_header():
+def print_header(header, num_rows, **Kwargs):
     print()
-    print(f'\t\t\tClients list: {len(clients)} clients')
+    print(f'\t\t\t{header}: {num_rows} rows')
     print('--'*30)
-    print('| Acount NO.\t| PIN Code | Name\t\t| Balance ')
+    #print('| Acount NO.\t| PIN Code | Name\t\t| Balance ')
+    print(f"| {Kwargs.get('k0')}.\t| {Kwargs.get('k1')} | {Kwargs.get('k2')}\t\t| {Kwargs.get('k3')} ")
     print('--'*30)
 
 
 def show_all_clients():
-    print_clients_header()
+    print_header('Clients List',len(clients), k0='Acount NO', k1='PIN Code', k2='Name', k3='Balance')
 
     for key, value in clients.items():
         print(f"| {key}\t\t| {value.get('Pincode')}\t   | {value.get('Name')}\t\t| {value.get('Balance')} ")
+
 
 def print_screens_header(screen_name):
     print()
@@ -43,6 +44,7 @@ def print_client_info(account_no):
         print(f'{key}: {vlaue}')
 
     print('--' * 30) 
+
 
 def is_key_exist(account_no):
     return account_no in clients.keys()
@@ -67,6 +69,7 @@ def insert_data(account_no):
 
     clients[account_no] = {'Pincode':pincode, 'Name':name,'Balance': balance}
     write_data(clients)
+
 
 def add_new_client():
     print_screens_header('Add New Client Screen')
@@ -105,6 +108,7 @@ def delete_client():
 
 def balance_inquery(account_no):
     return clients[account_no].get('Balance')
+
 
 def deposit():
     account_no = find_client('Deposit Screen')
@@ -154,7 +158,51 @@ def transactions():
             break
 
 
-def exit():
-    print_screens_header('Exit Screen')
+def logout():
+    print_screens_header('Logout Screen')
     print('Good bye !!  :) ')
-    
+
+
+def list_users():
+    print_header('Users List',len(users), k0='Username', k1='Password', k2='Permission', k3='')
+
+def add_user():
+    print('add user')
+
+def delete_user():
+   print('delete user')
+
+def update_user():
+    print('delete user')
+
+def find_user():
+    print('find user')
+
+
+def manage_users():
+    users_message ="""    [1] List Users.
+    [2] Add New User.
+    [3] Delete User.
+    [4] Update User.
+    [5] Find User.
+    [6] Main Menue.
+"""  
+    while True:
+        print_screens_header('Manage Users Screen')
+        print(users_message)
+
+        choice = read_choice(length=6)
+
+        if choice == '1':
+            list_users()
+        elif choice == '2':
+            add_user()
+        elif choice == '3':
+            delete_user()
+        elif choice == '4':
+            update_user()
+        elif choice == '5':
+            find_user()
+        elif choice == '6':
+            break
+

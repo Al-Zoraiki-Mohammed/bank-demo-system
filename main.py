@@ -1,6 +1,7 @@
 """"""
 from logic import *
-from data import load_data, users_file
+from data import *
+
 
 def show_main_screen(title='Main Menu Screen'):
     print("=="*30,f"\n\t{title}")
@@ -12,7 +13,8 @@ def show_main_screen(title='Main Menu Screen'):
     [4] Update a client.
     [5] Delete a client.
     [6] Transactions.
-    [7] Exist.
+    [7] Manage Users.
+    [8] Logout
 """
     print(message, end="")
     print('=='*30)
@@ -21,7 +23,6 @@ def show_main_screen(title='Main Menu Screen'):
 
 
 def authorized_user(user_name, password):
-    users = load_data(users_file)
     for user in users:
         if (users.get(user).get('name') == user_name and 
            users.get(user).get('password') == password):
@@ -60,11 +61,11 @@ if __name__ == "__main__":
         elif choice == '6':
             transactions()
         elif choice == '7':
-            exit()
+            manage_users()
+        elif choice == '8':
+            logout()
             break
         
         input('Press Enter to back to main screen ...')
         print()
         
-
-
