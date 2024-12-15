@@ -7,6 +7,11 @@
     "1": {
         "name": "mama",
         "password": "mama",
-        "permission": 0
+        "permission": -1
+    },
+    "2": {
+        "name": "guest",
+        "password": "guest",
+        "permission": 1
     }
 }

@@ -16,16 +16,19 @@ def print_header(header, num_rows, **Kwargs):
     print()
     print(f'\t\t\t{header}: {num_rows} rows')
     print('--'*30)
-    #print('| Acount NO.\t| PIN Code | Name\t\t| Balance ')
     print(f"| {Kwargs.get('k0')}.\t| {Kwargs.get('k1')} | {Kwargs.get('k2')}\t\t| {Kwargs.get('k3')} ")
     print('--'*30)
 
 
-def show_all_clients():
-    print_header('Clients List',len(clients), k0='Acount NO', k1='PIN Code', k2='Name', k3='Balance')
+def show_all_data(data):
+    for key, value in data.items():
+        inner_ks = list(value.keys())
+        print(f"| {key}\t\t| {value.get(inner_ks[0])}\t   | {value.get(inner_ks[1])}\t\t| {value.get(inner_ks[2])} ")
 
-    for key, value in clients.items():
-        print(f"| {key}\t\t| {value.get('Pincode')}\t   | {value.get('Name')}\t\t| {value.get('Balance')} ")
+
+def show_clients():
+    print_header('Clients List',len(clients), k0='Acount NO', k1='PIN Code', k2='Name', k3='Balance')
+    show_all_data(clients)
 
 
 def print_screens_header(screen_name):
@@ -46,14 +49,14 @@ def print_client_info(account_no):
     print('--' * 30) 
 
 
-def is_key_exist(account_no):
-    return account_no in clients.keys()
+def is_key_exist(key, data):
+    return key in data.keys()
 
 
-def find_client(text='Find Client Screen'):
-    print_screens_header(text)
+def find_client(title='Find Client Screen'):
+    print_screens_header(title)
     account_no = input('Type account number: ')
-    if  is_key_exist(account_no):
+    if  is_key_exist(account_no, clients):
         print_client_info(account_no)
     else:
         print(f'Account Number: {account_no} not found :(  ')
@@ -62,13 +65,13 @@ def find_client(text='Find Client Screen'):
 
 
 
-def insert_data(account_no):
+def insert_client(account_no):
     pincode = input('Type PIN Code: ')
     name = input('Type account name: ')
     balance = input('Type balance: ')
 
     clients[account_no] = {'Pincode':pincode, 'Name':name,'Balance': balance}
-    write_data(clients)
+    write_data(clients, clients_file)
 
 
 def add_new_client():
@@ -77,60 +80,64 @@ def add_new_client():
     while add_more == True:
 
         account_no = input('Type account no: ')
-        while is_key_exist(account_no):
+        while is_key_exist(account_no, clients):
             account_no = input(f'Account no: [{account_no}] already exists. Type new: ')
         
-        insert_data(account_no)
+        insert_client(account_no)
         print('client Added Successfully !')
 
         add_more = 'y' == input('Would you like to add more? y/n: ').strip().lower()
 
 
-def update_client_data():
+def update_client():
     account_no = find_client('Update Client Screen')
 
     is_confirmed = 'y' == input('Are you sure you wanna update this account? y/n: ')
     if is_confirmed:
-        insert_data(account_no)
+        insert_client(account_no)
         print('Updated Successfully !!')
+
+
+def delete_row(key, data, file):
+    if is_key_exist(key, data):
+        is_confirmed = 'y' == input('Are you sure you wanna delete this data? y/n: ')
+        if is_confirmed:
+            data.pop(key)
+            write_data(data, file)
+            print(f'Row of no: {key} Deleted Successfully !!')
 
 
 def delete_client():
     account_no = find_client('Delete Screen')
+    delete_row(account_no, clients, clients_file)
 
-    if is_key_exist(account_no):
-        is_confirmed = 'y' == input('Are you sure you wanna delete this account? y/n: ')
-        if is_confirmed:
-            clients.pop(account_no)
-            write_data(clients)
-            print('Deleted Successfully !!')
-
-
+    
 def balance_inquery(account_no):
-    return clients[account_no].get('Balance')
+    if is_key_exist(account_no, clients):
+        return clients[account_no].get('Balance')
 
 
 def deposit():
     account_no = find_client('Deposit Screen')
-    if is_key_exist(account_no):
+    if is_key_exist(account_no, clients):
         amount = int(input('Enter amount to deposit(i.e: 100 ): ').strip())
         int_balance = int(balance_inquery(account_no)[:-1])
         clients[account_no]['Balance'] = f'{int_balance + amount}$'
         print('Deposited sucessfully ! ..')
-        write_data(clients)
+        write_data(clients, clients_file)
         print(f'Updated balance is {balance_inquery(account_no)}')
         
     
 def withdraw():
     account_no = find_client('Withdraw Screen')
-    if is_key_exist(account_no):
+    if is_key_exist(account_no, clients):
         amount = int(input('Enter amount to withdraw (i.e: 100 ): ').strip())
         int_balance = int(balance_inquery(account_no)[:-1])
 
         if int_balance >= amount: 
             clients[account_no]['Balance'] = f'{int_balance - amount}$'
             print(f'{amount} is withdrawn sucessfully ! ..')
-            write_data(clients)
+            write_data(clients, clients_file)
             print(f'Updated balance is {balance_inquery(account_no)}')
         else:
             print(f'Insufficient amount, you can not withdraw more than {int_balance}$')
@@ -160,29 +167,79 @@ def transactions():
 
 def logout():
     print_screens_header('Logout Screen')
-    print('Good bye !!  :) ')
+    print('\nGood bye !!  :) \n')
 
 
 def show_users():
-    print_header('Users List',len(users), k0=' Users No', k1='Username', k2='Password', k3='Permission')
-
-    for key, value in users.items():
-        print(f"| {key}\t\t| {value.get('name')}\t   | {value.get('password')}\t\t| {value.get('permission')} ")
-
+    print_header('Users List',len(users), k0=' User Id', k1='Username', k2='Password', k3='Permission')
+    show_all_data(users)
     
+    input('\nPress Enter to back to main screen ...')
+
+
+def insert_permission():
+    return 1
+
+def insert_user(user_id):
+    name = input('Type user name: ').strip()
+    password = input('Type password: ').strip()
+    permission = insert_permission()
+    users[user_id] = {'name': name, 'password': password, 'permission': permission}
+    write_data(users, users_file)
+
 
 def add_user():
-    print('add user')
+    print_screens_header('Add New User Screen')
+    add_more = True
+    while add_more == True:
+
+        user_id = input('Type User id: ')
+        while is_key_exist(user_id, users):
+            user_id = input(f'User id: [{user_id}] already exists. Type a new one: ')
+        
+        insert_user(user_id)
+        print('User Added Successfully !')
+
+        add_more = 'y' == input('Would you like to add more? y/n: ').strip().lower()
+
+def print_user_info(user_id):
+    print()
+    print('\tUser Details')
+    print('--' * 30)
+
+    print(f'User Id: {user_id}')
+    for key, vlaue in users.get(user_id).items():
+        print(f'{key}: {vlaue}')
+
+    print('--' * 30)
+
+
+def find_user( title = 'Find User Screen'):
+    print_screens_header(title)
+    user_id = input('Type User id: ').strip()
+    
+    if is_key_exist(user_id, users):
+        print_user_info(user_id)
+    else:
+        print(f'User with user_id {user_id} is not found :( ')
+    
+    return user_id
+
 
 def delete_user():
-   print('delete user')
+    user_id = find_user('Delete Screen')
+    delete_row(user_id, users, users_file)
+
+
+
 
 def update_user():
-    print('delete user')
+    user_id = find_user('Update User Screen')
 
-def find_user():
-    print('find user')
-
+    is_confirmed = 'y' == input('Are you sure you wanna update? y/n: ')
+    if is_confirmed:
+        insert_user(user_id)
+        print('User Updated Successfully !!')
 
 def manage_users():
     users_message ="""    [1] List Users.
