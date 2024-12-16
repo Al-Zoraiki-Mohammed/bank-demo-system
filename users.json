@@ -13,5 +13,15 @@
         "name": "guest",
         "password": "guest",
         "permission": 1
+    },
+    "3": {
+        "name": "test",
+        "password": "test",
+        "permission": -1
+    },
+    "4": {
+        "name": "nana",
+        "password": "nana",
+        "permission": "0"
     }
 }

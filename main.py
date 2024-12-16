@@ -1,10 +1,8 @@
-""" Needed to finish add users with permission. finish insert_aurhorization() functin.)"""
+""" The Entry point to the system"""
+
 from logic import *
 from data import *
 
-code = {'show_all':'1', 'add_client': '2', 'find_client':'4',
-                   'update_client':'8','delete_client':'16',
-                   'transaction':'32','manage_users':'64'}
 
 def show_main_screen(title='Main Menu Screen'):
     print("=="*30,f"\n\t{title}")
@@ -57,7 +55,7 @@ def is_permited(permission_scope, code):
 
 def print_no_enouph_permission():
     msg = """ Sorry, You don't have engough permission !!
-    Please, contact your admin or simply logout :)
+    Please, contact your admin  :)
 """
     print(msg)
 

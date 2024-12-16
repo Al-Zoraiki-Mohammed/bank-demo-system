@@ -64,7 +64,6 @@ def find_client(title='Find Client Screen'):
     return account_no
 
 
-
 def insert_client(account_no):
     pincode = input('Type PIN Code: ')
     name = input('Type account name: ')
@@ -178,7 +177,34 @@ def show_users():
 
 
 def insert_permission():
-    return 1
+    is_full_access = input('Allow user to access entire system? (y/n): ') == 'y'.lower()
+    if is_full_access == True:
+        return -int(is_full_access)
+    
+    show_all = code.get('show_all') if input(
+        'Allow user to show clients? (y/n): ') == 'y'.lower() else 0
+    
+    add_client = code.get('add_client') if input(
+        'Allow user to add clients? y/n: ').lower()=='y' else 0
+    
+    find_client = code.get('find_client') if input(
+        'Allow user to find clients? y/n: ').lower()=='y' else 0
+    
+    update_client = code.get('update_client') if input(
+        'Allow user to update clients? y/n: ').lower()=='y' else 0
+    
+    delete_client = code.get('delete_client') if input(
+        'Allow user to delete clients? y/n: ').lower()=='y' else 0
+    
+    transaction = code.get('transaction') if input(
+        'Allow user to access transactions? y/n: ').lower()=='y' else 0
+    
+    manage_users =  code.get('manage_users') if input(
+        'Allow user to manage users? y/n: ').lower()=='y' else 0
+
+    return str(int(show_all)|int(add_client)|int(find_client)|int(update_client)
+               |int(delete_client)|int(transaction)|int(manage_users))
+
 
 def insert_user(user_id):
     name = input('Type user name: ').strip()
@@ -231,8 +257,6 @@ def delete_user():
     delete_row(user_id, users, users_file)
 
 
-
-
 def update_user():
     user_id = find_user('Update User Screen')
 
@@ -267,4 +291,3 @@ def manage_users():
             find_user()
         elif choice == '6':
             break
-
